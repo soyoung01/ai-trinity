@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     
     # CORS 설정
-    ALLOWED_ORIGINS: str = "https://mefoweb.com,https://api.mefoweb.com,https://care.mefoweb.com,http://localhost:5173"
+    ALLOWED_ORIGINS: str = "https://mefoweb.com","https://api.mefoweb.com","http://localhost:5173","https://fit.mefoweb.com"
     
     # 데이터 경로
     REFERENCE_DATA_PATH: str = "outputs/reference_percentiles_real.json"
