@@ -235,3 +235,6 @@ grafana/data/
 node_modules/
 
 data/
+
+*.pem
+*.key
