@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Query
 from src.api.models.request import PercentileRequest
-from src.api.models.response import PercentileResponse, ReportRequest
+from src.api.models.response import PercentileResponse
 from src.utils.percentile_calculator import PercentileCalculator, create_user_fitness_profile
 from src.utils.persona_classifier import classify_persona
 from src.utils.llm_reporter import FitnessReportGenerator
@@ -40,14 +40,11 @@ def get_report_generator():
 @router.post(
     "/score",
     response_model=PercentileResponse,
-    status_code=status.HTTP_200_OK,
-    tags=["Fitness"]
+    status_code=status.HTTP_200_OK
 )
-async def calculate_percentile(
-    request: PercentileRequest,
-    include_llm: bool = Query(True, description="LLM 리포트 생성 여부")):
+async def calculate_percentile(request: PercentileRequest):
     try:
-        logger.info(f"=== 체력 분석 시작 (include_llm={include_llm}) ===")
+        logger.info(f"=== 체력 분석 시작 ===")
         
         # 계산기 인스턴스 가져오기
         calc = get_calculator()
@@ -96,30 +93,29 @@ async def calculate_percentile(
             "persona": api_persona
         }
         
-        if include_llm:
-            try:
-                logger.info("LLM 리포트 생성 시작...")
-                report_gen = get_report_generator()
+        try:
+            logger.info("LLM 리포트 생성 시작...")
+            report_gen = get_report_generator()
                 
-                llm_data = {
-                    'user_info': profile['user_info'],
-                    'percentiles': profile['percentiles'],
-                    'persona': persona
-                }
+            llm_data = {
+                'user_info': profile['user_info'],
+                'percentiles': profile['percentiles'],
+                'persona': persona
+            }
                 
-                llm_report = report_gen.generate_report(
-                    data=llm_data,
-                    max_tokens=settings.OPENAI_MAX_TOKENS,
-                    temperature=settings.OPENAI_TEMPERATURE
-                )
+            llm_report = report_gen.generate_report(
+                data=llm_data,
+                max_tokens=settings.OPENAI_MAX_TOKENS,
+                temperature=settings.OPENAI_TEMPERATURE
+            )
                 
-                response_data["llm_report"] = llm_report
-                logger.info(f"LLM 리포트 생성 완료 ({len(llm_report)}자)")
+            response_data["llm_report"] = llm_report
+            logger.info(f"LLM 리포트 생성 완료 ({len(llm_report)}자)")
                 
-            except Exception as e:
-                logger.error(f"LLM 생성 실패 (백분위는 정상): {str(e)}")
-                response_data["llm_report"] = "체력 측정을 완료했어요! 💪\n\n꾸준히 운동하면 더 좋아질 거예요. 화이팅!"
-                logger.info("기본 리포트로 대체")
+        except Exception as e:
+            logger.error(f"LLM 생성 실패 (백분위는 정상): {str(e)}")
+            response_data["llm_report"] = "체력 측정을 완료했어요! 💪\n\n꾸준히 운동하면 더 좋아질 거예요. 화이팅!"
+            logger.info("기본 리포트로 대체")
         
         logger.info("=== 체력 분석 완료 ===")
         
@@ -150,61 +146,3 @@ async def calculate_percentile(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="백분위 계산 중 오류가 발생했습니다."
         )
-        
-
-@router.post(
-    "/report",
-    summary="LLM 기반 체력 진단 텍스트 생성"
-)
-async def generate_fitness_report(request: ReportRequest):
-    
-    try:
-        # 디버깅: 실제 데이터 구조 확인
-        logger.info("=== 받은 데이터 구조 ===")
-        logger.info(f"user_info: {request.user_info}")
-        logger.info(f"percentiles keys: {request.percentiles.keys()}")
-        logger.info(f"persona keys: {request.persona.keys()}")
-        logger.info(f"average_score: {request.average_score}")
-        
-        # 첫 번째 percentile 샘플 출력
-        if request.percentiles:
-            first_key = list(request.percentiles.keys())[0]
-            logger.info(f"percentiles 샘플 [{first_key}]: {request.percentiles[first_key]}")
-        
-        logger.info(f"persona 내용: {request.persona}")
-        logger.info("======================")
-        
-        report_gen = get_report_generator()
-        
-        llm_data = {
-            'user_info': request.user_info,
-            'percentiles': request.percentiles,
-            'persona': request.persona,
-            'average_score': request.average_score
-        }
-        
-        llm_report = report_gen.generate_report(
-            data=llm_data,
-            max_tokens=settings.OPENAI_MAX_TOKENS,
-            temperature=settings.OPENAI_TEMPERATURE
-        )
-        
-        return {
-            "status": "success",
-            "data": {
-                "llm_report": llm_report
-            },
-            "message": "AI 리포트가 생성되었습니다."
-        }
-        
-    except Exception as e:
-        logger.error(f"리포트 생성 중 오류: {str(e)}", exc_info=True)
-        
-        # 최후의 fallback
-        return {
-            "status": "success",
-            "data": {
-                "llm_report": "체력 측정을 완료했어요! 💪\n\n꾸준히 운동하면 더 좋아질 거예요. 화이팅!"
-            },
-            "message": "기본 리포트가 생성되었습니다."
-        }

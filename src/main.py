@@ -31,7 +31,7 @@ app.add_middleware(
 
 # 라우터 등록
 app.include_router(health.router, prefix="", tags=["Health"])
-app.include_router(fitness.router, prefix=settings.API_V1_PREFIX + "/fitness", tags=["Fitness"])
+app.include_router(fitness.router, prefix=settings.API_V1_PREFIX, tags=["건강정보"])
 
 
 @app.on_event("startup")
