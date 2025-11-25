@@ -1,0 +1,237 @@
+# ============================================
+# Python
+# ============================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# ============================================
+# 환경변수 및 설정 파일
+# ============================================
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+config.ini
+secrets.json
+
+# 환경변수 예시 파일은 포함
+!.env.example
+
+# ============================================
+# 가상환경
+# ============================================
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+trinity/
+.venv/
+
+# Conda
+.conda/
+
+# ============================================
+# IDE / 에디터
+# ============================================
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# ============================================
+# OS
+# ============================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ============================================
+# 로그 파일
+# ============================================
+*.log
+logs/
+*.log.*
+
+# Nginx 로그
+nginx/logs/
+nginx/*.log
+
+# ============================================
+# 데이터베이스
+# ============================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================
+# Docker 관련
+# ============================================
+# Docker 빌드 캐시
+.dockerignore.bak
+
+# Docker 컨테이너 데이터
+docker-data/
+volumes/
+
+# Docker Compose override (로컬 개발용)
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Docker 임시 파일
+.docker/
+
+# 빌드 아티팩트
+*.tar
+*.tar.gz
+
+# ============================================
+# Nginx 관련
+# ============================================
+# SSL 인증서
+nginx/ssl/*.key
+nginx/ssl/*.crt
+nginx/ssl/*.pem
+ssl/
+
+# Let's Encrypt 인증서
+certbot/
+letsencrypt/
+
+# Nginx 캐시
+nginx/cache/
+nginx/temp/
+
+# 로컬 테스트용 Nginx 설정
+nginx/nginx.local.conf
+
+# ============================================
+# 배포 관련
+# ============================================
+# 배포 스크립트에서 생성되는 임시 파일
+deploy/*.log
+deploy/tmp/
+
+# Secrets (Kubernetes, Docker Swarm 등)
+secrets/
+k8s/secrets/
+
+# 임시 테스트 파일
+test_*.py
+temp/
+tmp/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# ============================================
+# FastAPI / Uvicorn
+# ============================================
+# 업로드 파일 (있다면)
+uploads/
+
+# 캐시
+.cache/
+
+# ============================================
+# CI/CD
+# ============================================
+# GitHub Actions 로컬 테스트
+.github/workflows/*.local.yml
+
+# GitLab CI 로컬 파일
+.gitlab-ci.local.yml
+
+# ============================================
+# 모니터링 & 로깅
+# ============================================
+# Prometheus 데이터
+prometheus/data/
+
+# Grafana 데이터
+grafana/data/
+
+# ============================================
+# 기타
+# ============================================
+# Backup files
+*.bak
+*.backup
+
+# Compressed files
+*.zip
+*.rar
+
+# Node modules (프론트엔드 있을 경우)
+node_modules/
+
+data/
