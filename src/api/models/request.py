@@ -6,20 +6,20 @@ from typing import Optional
 class StaminaInput(BaseModel):
     
     plank: Optional[float] = Field(None, ge=0, le=600, description="플랭크 (초)")
-    push_up: Optional[int] = Field(None, ge=0, le=200, description="푸쉬업 (회)")
-    chair_squat: Optional[int] = Field(None, ge=0, le=100, description="의자 스쿼트 30초 (회)")
-    step_test: Optional[int] = Field(None, ge=0, le=200, description="Step 테스트 1분 (회)")
-    forward_fold: Optional[int] = Field(None, ge=1, le=5, description="유연성 점수 (1-5)")
+    pushUp: Optional[int] = Field(None, ge=0, le=200, description="푸쉬업 (회)")
+    chairSquat: Optional[int] = Field(None, ge=0, le=100, description="의자 스쿼트 30초 (회)")
+    stepTest: Optional[int] = Field(None, ge=0, le=200, description="Step 테스트 1분 (회)")
+    forwardFold: Optional[int] = Field(None, ge=1, le=5, description="유연성 점수 (1-5)")
     balance: Optional[float] = Field(None, ge=0, le=300, description="한발서기 (초)")
     
     class Config:
         json_schema_extra = {
             "example": {
                 "plank": 60,
-                "push_up": 25,
-                "chair_squat": 26,
-                "step_test": 50,
-                "forward_fold": 4,
+                "pushUp": 25,
+                "chairSquat": 26,
+                "stepTest": 50,
+                "forwardFold": 4,
                 "balance": 55
             }
         }
@@ -51,10 +51,10 @@ class PercentileRequest(BaseModel):
                 "bmi": 23.5,
                 "stamina": {
                     "plank": 60,
-                    "push_up": 25,
-                    "chair_squat": 26,
-                    "step_test": 50,
-                    "forward_fold": 4,
+                    "pushUp": 25,
+                    "chairSquat": 26,
+                    "stepTest": 50,
+                    "forwardFold": 4,
                     "balance": 55
                 }
             }

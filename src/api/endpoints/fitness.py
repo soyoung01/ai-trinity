@@ -56,10 +56,10 @@ async def calculate_percentile(request: PercentileRequest):
             'bmi': request.bmi,
             'stamina': {
                 'plank': request.stamina.plank,
-                'push_up': request.stamina.push_up,
-                'chair_squat': request.stamina.chair_squat,
-                'step_test': request.stamina.step_test,
-                'forward_fold': request.stamina.forward_fold,
+                'pushUp': request.stamina.pushUp,
+                'chairSquat': request.stamina.chairSquat,
+                'stepTest': request.stamina.stepTest,
+                'forwardFold': request.stamina.forwardFold,
                 'balance': request.stamina.balance
             }
         }
@@ -94,7 +94,7 @@ async def calculate_percentile(request: PercentileRequest):
         }
         
         try:
-            logger.info("LLM 리포트 생성 시작...")
+            logger.info("LLM 리포트 생성 시작")
             report_gen = get_report_generator()
                 
             llm_data = {

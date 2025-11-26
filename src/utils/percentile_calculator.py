@@ -148,7 +148,7 @@ USER_TEST_CONVERSIONS = {
             'F_90+': 0.10,
         }
     },
-    'push_up': {
+    'pushUp': {
         'target_component': '근력',
         'description': '푸쉬업 (회) → 악력 (kg) 간접 추정',
         'conversion_factors': {
@@ -172,7 +172,7 @@ USER_TEST_CONVERSIONS = {
             'F_90+': 0.7,
         }
     },
-    'chair_squat': {
+    'chairSquat': {
         'target_component': '민첩성',
         'description': '의자 스쿼트 (30초, 회) → 제자리멀리뛰기 (cm)',
         'conversion_factors': {
@@ -196,7 +196,7 @@ USER_TEST_CONVERSIONS = {
             'F_90+': 2.5,
         }
     },
-    'step_test': {
+    'stepTest': {
         'target_component': '심폐지구력',
         'description': 'Step 테스트 (1분, 회) → 왕복오래달리기 (회)',
         'conversion_factors': {
@@ -220,7 +220,7 @@ USER_TEST_CONVERSIONS = {
             'F_90+': 0.85,
         }
     },
-    'forward_fold': {
+    'forwardFold': {
         'target_component': '유연성',
         'description': '유연성 점수 (1-5) → 앉아윗몸앞으로굽히기 (cm)',
         # 점수 → cm 변환 (고정값)
@@ -271,7 +271,7 @@ def convert_user_test_to_national(test_name, test_value, gender, age):
     group_key = f"{gender}_{age_group}"
     
     # 유연성은 특별 처리 (점수 → cm)
-    if test_name == 'forward_fold':
+    if test_name == 'forwardFold':
         if test_value not in conversion_info['score_to_cm']:
             return {'error': f'유효하지 않은 유연성 점수: {test_value}'}
         converted_value = conversion_info['score_to_cm'][test_value]
@@ -308,10 +308,10 @@ def create_user_fitness_profile(user_data, calculator):
     # 6가지 테스트 각각 처리
     test_mapping = {
         'plank': '코어',
-        'push_up': '근력',
-        'chair_squat': '민첩성',
-        'step_test': '심폐지구력',
-        'forward_fold': '유연성',
+        'pushUp': '근력',
+        'chairSquat': '민첩성',
+        'stepTest': '심폐지구력',
+        'forwardFold': '유연성',
         'balance': '민첩성'
     }
     
