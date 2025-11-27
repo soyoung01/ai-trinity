@@ -3,6 +3,7 @@ version: '3.8'
 services:
   fastapi:
     build: .
+    image: soyoung22/ai-trinity:latest 
     container_name: ai-trinity-api
     restart: unless-stopped
     env_file:
