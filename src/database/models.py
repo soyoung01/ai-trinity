@@ -100,7 +100,6 @@ class ExerciseList(Base):
     exercise = relationship("Exercise")
     
 
-# 추후 수정 필요
 class AnalyzeResult(Base):
     __tablename__ = "analyze_result"
 
@@ -108,46 +107,18 @@ class AnalyzeResult(Base):
     created_at = Column(DateTime(6))
     updated_at = Column(DateTime(6))
     
-    user_id = Column(BigInteger, ForeignKey("user.id"), unique=True) # UK 설정 확인
+    user_id = Column(BigInteger, ForeignKey("user.id"), unique=True)
     
-    # Text Data
-    name = Column(String(255))
-    description = Column(String(255))
-    emoji = Column(String(255))
-    llm_report = Column(String(255))
-    type = Column(String(255))
-    
-    # Numeric Data (Scores & Percentiles)
     average_score = Column(Float, nullable=False)
-    strongest_component = Column(String(255))
-    strongest_percentile = Column(Integer, nullable=False)
-    weakest_component = Column(String(255))
-    weakest_percentile = Column(Integer, nullable=False)
+    llm_report = Column(String(255))
     
-    # Percentiles (DDL 컬럼명 그대로 유지 - 오타 주의: flexbility, peragility 등)
+    per_agility = Column(Integer, nullable=False)
     per_body_composition = Column(Integer, nullable=False)
     per_cardio = Column(Integer, nullable=False)
     per_core = Column(Integer, nullable=False)
-    per_flexbility = Column(Integer, nullable=False) # DDL: flexbility
+    per_flexibility = Column(Integer, nullable=False)
     per_strength = Column(Integer, nullable=False)
-    peragility = Column(Integer, nullable=False)     # DDL: peragility
+
+    persona = Column(String(50)) 
     
-    # Grades
-    grade_agility = Column(String(255))
-    grade_body_composition = Column(String(255))
-    grade_cardio = Column(String(255))
-    grade_core = Column(String(255))
-    grade_flexibility = Column(String(255))
-    grade_strength = Column(String(255))
-    
-    # Snapshots (측정 당시 기록)
-    snap_age = Column(Integer, nullable=False)
-    snapbmi = Column(Float, nullable=False)          # DDL: snapbmi
-    snap_balance = Column(Float, nullable=False)
-    snap_chair_squat = Column(Integer, nullable=False)
-    snap_forward_fold = Column(Integer, nullable=False)
-    snap_height = Column(Float, nullable=False)
-    snap_plank = Column(Integer, nullable=False)
-    snap_push_up = Column(Integer, nullable=False)
-    snap_step_test = Column(Integer, nullable=False)
-    snap_weight = Column(Float, nullable=False)
+    # user = relationship("User", back_populates="analyze_result") 
