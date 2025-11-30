@@ -33,6 +33,8 @@ def create_new_routine(
         )
         
         image_map = {c["id"]: c["image"] for c in candidates}
+        
+        DEFAULT_IMAGE_URL = "https://mofit-image.s3.ap-northeast-2.amazonaws.com/exercises/1.png"
 
         # DB 저장
         existing_plans = db.query(ExercisePlan).filter(ExercisePlan.user_id == user_id).all()
@@ -54,6 +56,8 @@ def create_new_routine(
                 if img:
                     thumbnail_url = img
                     break
+                if not thumbnail_url:
+                    thumbnail_url = DEFAULT_IMAGE_URL
             
             new_plan = ExercisePlan(
                 user_id=user_id,
