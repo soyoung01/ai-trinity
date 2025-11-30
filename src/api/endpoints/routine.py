@@ -5,11 +5,11 @@ from src.api.deps import get_current_user_id
 from src.recommendation.routine_preparation import RoutinePreparationService
 from src.recommendation.routine_generator import RoutineGeneratorService
 from src.database.models import ExercisePlan, ExerciseList
-from src.api.models.routine import WeeklyRoutineResponse
+from src.api.models.routine import SimpleRoutineResponse
 
 router = APIRouter()
 
-@router.post("/routine", response_model=WeeklyRoutineResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/routine", response_model=SimpleRoutineResponse, status_code=status.HTTP_201_CREATED)
 def create_new_routine(
     user_id: int = Depends(get_current_user_id),  
     db: Session = Depends(get_db)
@@ -35,7 +35,16 @@ def create_new_routine(
         image_map = {c["id"]: c["image"] for c in candidates}
 
         # DB 저장
-        db.query(ExercisePlan).filter(ExercisePlan.user_id == user_id).delete()
+        existing_plans = db.query(ExercisePlan).filter(ExercisePlan.user_id == user_id).all()
+        
+        if existing_plans:
+            plan_ids = [p.id for p in existing_plans]
+            
+            # 자식 테이블 먼저 삭제
+            db.query(ExerciseList).filter(ExerciseList.exercise_plan_id.in_(plan_ids)).delete(synchronize_session=False)
+            
+            # 부모 테이블 삭제
+            db.query(ExercisePlan).filter(ExercisePlan.user_id == user_id).delete(synchronize_session=False)
         
         for daily in weekly_routine_data.routines:
             
@@ -68,11 +77,10 @@ def create_new_routine(
         db.commit()
         print("루틴 저장 완료")
         
-        return {
-            "status": "success",
-            "message": "새로운 7일 맞춤 루틴이 생성되었습니다.",
-            "data": weekly_routine_data
-        }
+        return SimpleRoutineResponse(
+        status="success",
+        message="새로운 7일 맞춤 루틴이 생성되었습니다."
+        )
 
     except Exception as e:
         db.rollback()

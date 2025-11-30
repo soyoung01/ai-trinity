@@ -32,8 +32,11 @@ class RoutineGeneratorService:
         [절대 규칙]
         1. 반드시 제공된 'Available Exercises' 목록에 있는 운동만 사용해야 합니다. (Exercise ID 필수 매칭)
         2. 제공되지 않은 운동을 창조하거나 ID를 임의로 지어내면 안 됩니다.
-        3. 하루 운동 루틴은 30분~40분 내외로 구성하세요.
-        4. 루틴 구성 시 'Warm-up -> Main Workout -> Cool-down' 흐름을 고려하세요.
+        3. 하루 운동 루틴은 **반드시 4개~6개의 운동**으로 구성해야 합니다. (2개 이하로 추천 금지)
+        4. 루틴 구성 시 다음 흐름을 반드시 지키세요:
+           - Warm-up (1개)
+           - Main Workout (2~4개)
+           - Cool-down (1개)
         5. 특정 부위에 부하가 쏠리지 않도록 적절한 분할(Split)을 적용하세요.
         """
 

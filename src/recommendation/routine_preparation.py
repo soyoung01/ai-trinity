@@ -53,12 +53,15 @@ class RoutinePreparationService:
             )
 
         # 부상 부위 제외
-        if injuries:# ExerciseRestrict 테이블에서 user_restrict와 매칭되는 행 찾기
-            bad_exercises_subquery = self.db.query(ExerciseRestrict.exercise_id)\
+        if injuries:
+            bad_exercises = self.db.query(ExerciseRestrict.exercise_id)\
                 .filter(ExerciseRestrict.exercise_restrict.in_(injuries))\
-                .subquery()
+                .all()
             
-            query = query.filter(Exercise.id.notin_(bad_exercises_subquery))
+            bad_exercise_ids = [row[0] for row in bad_exercises]
+
+            if bad_exercise_ids:
+                query = query.filter(Exercise.id.notin_(bad_exercise_ids))
 
         # 숙련도
         if profile["proficiency"] == "BEGINNER":

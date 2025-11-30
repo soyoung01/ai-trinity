@@ -5,6 +5,20 @@ from datetime import datetime
 
 Base = declarative_base()
 
+class User(Base):
+    __tablename__ = "user"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    created_at = Column(DateTime(6))
+    updated_at = Column(DateTime(6))
+    login_id = Column(String(255), nullable=False)
+    name = Column(String(255), nullable=False)
+    password = Column(String(255), nullable=True)
+    picture = Column(String(255), nullable=True)
+    provider = Column(String(255), nullable=True)
+    provider_id = Column(String(255), nullable=True)
+    user_role = Column(String(20), nullable=False)
+
 class Exercise(Base):
     __tablename__ = "exercise"
     
@@ -71,8 +85,8 @@ class ExercisePlan(Base):
     __tablename__ = "exercise_plan"
     
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    created_at = Column(DateTime(6))
-    updated_at = Column(DateTime(6))
+    created_at = Column(DateTime(6), default=datetime.now)
+    updated_at = Column(DateTime(6), default=datetime.now, onupdate=datetime.now)
     
     user_id = Column(BigInteger, ForeignKey("user.id"))
     day = Column(Integer, nullable=False)
@@ -89,8 +103,8 @@ class ExerciseList(Base):
     __tablename__ = "exercise_list"
     
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    created_at = Column(DateTime(6))
-    updated_at = Column(DateTime(6))
+    created_at = Column(DateTime(6), default=datetime.now)
+    updated_at = Column(DateTime(6), default=datetime.now, onupdate=datetime.now)
     
     exercise_plan_id = Column(BigInteger, ForeignKey("exercise_plan.id"))
     exercise_id = Column(BigInteger, ForeignKey("exercise.id"))
@@ -104,8 +118,8 @@ class AnalyzeResult(Base):
     __tablename__ = "analyze_result"
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    created_at = Column(DateTime(6))
-    updated_at = Column(DateTime(6))
+    created_at = Column(DateTime(6), default=datetime.now)
+    updated_at = Column(DateTime(6), default=datetime.now, onupdate=datetime.now)
     
     user_id = Column(BigInteger, ForeignKey("user.id"), unique=True)
     

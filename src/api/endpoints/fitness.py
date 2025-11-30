@@ -1,4 +1,8 @@
-from fastapi import APIRouter, HTTPException, status, Query
+from fastapi import APIRouter, HTTPException, status, Depends
+from sqlalchemy.orm import Session
+from src.database.database import get_db
+from src.api.deps import get_current_user_id
+from src.database.models import AnalyzeResult
 from src.api.models.request import PercentileRequest
 from src.api.models.response import PercentileResponse
 from src.utils.percentile_calculator import PercentileCalculator, create_user_fitness_profile
@@ -11,7 +15,6 @@ import logging
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-# 전역 계산기 인스턴스 (서버 시작 시 한 번만 로드)
 calculator = None
 report_generator = None
 
@@ -42,14 +45,16 @@ def get_report_generator():
     response_model=PercentileResponse,
     status_code=status.HTTP_200_OK
 )
-async def calculate_percentile(request: PercentileRequest):
+async def calculate_percentile(
+    request: PercentileRequest,
+    user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
     try:
-        logger.info(f"=== 체력 분석 시작 ===")
+        logger.info(f"체력 분석 시작")
         
-        # 계산기 인스턴스 가져오기
         calc = get_calculator()
         
-        # 사용자 데이터 변환
         user_data = {
             'gender': request.gender,
             'age': request.age,
@@ -118,6 +123,38 @@ async def calculate_percentile(request: PercentileRequest):
             logger.info("기본 리포트로 대체")
         
         logger.info("=== 체력 분석 완료 ===")
+        
+        # DB 저장
+        try:
+            db.query(AnalyzeResult).filter(AnalyzeResult.user_id == user_id).delete()
+            
+            def get_p_val(key):
+                return int(profile['percentiles'].get(key, {}).get('percentile', 0) or 0)
+
+            new_analysis = AnalyzeResult(
+                user_id=user_id,
+                average_score=profile.get('average_score', 0) or 0,
+                llm_report=llm_report,
+                
+                # 백분위 매핑 (한글 키 -> DB 컬럼)
+                per_strength=get_p_val('근력'),
+                per_cardio=get_p_val('심폐지구력'),
+                per_core=get_p_val('코어'),
+                per_flexibility=get_p_val('유연성'),
+                per_agility=get_p_val('민첩성'),
+                per_body_composition=get_p_val('체성분'),
+                
+                persona=persona.get('type', 'BEGINNER') 
+            )
+            
+            db.add(new_analysis)
+            db.commit()
+            logger.info(f"DB 저장 완료 (User ID: {user_id})")
+            
+        except Exception as db_e:
+            db.rollback()
+            logger.error(f"DB 저장 중 오류 발생: {str(db_e)}")
+            raise HTTPException(status_code=500, detail="결과 저장 중 오류가 발생했습니다.")
         
         return PercentileResponse(
             status="success",

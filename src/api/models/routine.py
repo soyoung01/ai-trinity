@@ -26,6 +26,10 @@ class DailyRoutineSchema(BaseModel):
         ..., 
         description="하루 루틴의 테마 제목 (예: '상체 가동성 확보', '코어 집중')"
     )
+    description: str = Field(
+        ..., 
+        description="하루 루틴에 대한 간단한 한 줄 설명 (예: '코어 근육을 강화하여 허리 안정성을 높입니다.')"
+    )
     exercises: List[RoutineExerciseItem] = Field(
         ..., 
         description="해당 일자에 수행할 운동 목록"
@@ -39,3 +43,7 @@ class WeeklyRoutineResponse(BaseModel):
         min_length=7,
         max_length=7
     )
+    
+class SimpleRoutineResponse(BaseModel):
+    status: str = Field(..., description="응답 상태 (success/error)")
+    message: str = Field(..., description="응답 메시지")

@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     
     # MYSQL 설정
     DATABASE_URL: str
+    
+    SECRET_KEY: str
+    ALGORITHM: str = "HS256"
 
     
     @property
