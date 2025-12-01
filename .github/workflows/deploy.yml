@@ -36,9 +36,13 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
+        envs: PROD_ENV_FILE
         script: |
           # 프로젝트 폴더로 이동
           cd ai-trinity
+
+          # GitHub Secret 내용을 .env 파일로 덮어쓰기
+          echo "$PROD_ENV_FILE" > .env
           
           # 최신 코드 받기
           git pull origin main
@@ -51,3 +55,6 @@ jobs:
           
           # 불필요한 이미지 삭제 (용량 관리)
           docker image prune -f
+
+      env:
+        PROD_ENV_FILE: ${{ secrets.PROD_ENV_FILE }} 

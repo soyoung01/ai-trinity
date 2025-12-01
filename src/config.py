@@ -25,6 +25,12 @@ class Settings(BaseSettings):
     OPENAI_MODEL: str = "gpt-4o-mini"
     OPENAI_MAX_TOKENS: int = 800
     OPENAI_TEMPERATURE: float = 0.7
+    
+    # MYSQL 설정
+    DATABASE_URL: str
+    
+    SECRET_KEY: str
+    ALGORITHM: str = "HS256"
 
     
     @property

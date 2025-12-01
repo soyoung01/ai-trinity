@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.config import settings
-from src.api.endpoints import health, fitness
+from src.api.endpoints import health, fitness, routine
 import logging
 
 # 로깅 설정
@@ -32,6 +32,7 @@ app.add_middleware(
 # 라우터 등록
 app.include_router(health.router, prefix="", tags=["Health"])
 app.include_router(fitness.router, prefix=settings.API_V1_PREFIX, tags=["건강정보"])
+app.include_router(routine.router, prefix=settings.API_V1_PREFIX, tags=["운동루틴"])
 
 
 @app.on_event("startup")

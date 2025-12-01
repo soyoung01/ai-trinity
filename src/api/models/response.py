@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any
+from pydantic import BaseModel
 
 
 #체력요소별 백분위 정보
@@ -107,6 +108,7 @@ class ReportRequest(BaseModel):
 class HealthCheckResponse(BaseModel):
     """헬스체크 응답"""
     
-    status: str = Field(..., description="상태")
-    version: str = Field(..., description="버전")
-    message: str = Field(..., description="메시지")
+    status: str
+    version: str
+    message: str
+    db_status: str = "unknown"

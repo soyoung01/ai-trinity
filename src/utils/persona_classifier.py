@@ -73,27 +73,6 @@ PERSONA_TYPES = {
 
 
 def classify_persona(percentiles: Dict[str, Dict]) -> Dict[str, any]:
-    """
-    체력 백분위를 기반으로 페르소나 분류
-    
-    Args:
-        percentiles: 6개 체력요소별 백분위 정보
-        {
-            '근력': {'percentile': 45.2, 'grade': '평균'},
-            '심폐지구력': {'percentile': 60.1, 'grade': '평균'},
-            ...
-        }
-    
-    Returns:
-        dict: {
-            'type': 'balanced_athlete',
-            'name': '운동과 친구 타입',
-            'emoji': '💪',
-            'description': '...',
-            'characteristics': [...],
-            'recommendation': '...'
-        }
-    """
     # 백분위 점수 추출 (None 값 처리)
     scores = {}
     for component in ['근력', '심폐지구력', '코어', '유연성', '민첩성', '체성분']:
@@ -163,7 +142,7 @@ def classify_persona(percentiles: Dict[str, Dict]) -> Dict[str, any]:
     
     # 페르소나 정보 반환
     persona_info = PERSONA_TYPES[persona_type].copy()
-    #persona_info['type'] = persona_type
+    persona_info['type'] = persona_type.upper()
     persona_info['average_score'] = round(avg_score, 1)
     persona_info['strongest'] = {
         'component': max_component,
