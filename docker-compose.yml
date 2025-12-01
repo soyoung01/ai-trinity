@@ -4,7 +4,7 @@ services:
   fastapi:
     build: .
     image: soyoung22/ai-trinity:latest 
-    container_name: ai-trinity-api
+    container_name: ai-trinity
     restart: unless-stopped
     env_file:
       - .env
@@ -12,7 +12,7 @@ services:
       - PYTHONPATH=/app/src
     volumes:
       - ./outputs:/app/outputs:ro  # 참조 데이터 (읽기 전용)
-      - ./data//mofit-backend.pem:/app/mofit-backend.pem
+      - ./data/mofit-backend.pem:/app/mofit-backend.pem
     ports:
       - "8001:8000"
     networks:
