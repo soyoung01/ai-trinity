@@ -29,6 +29,11 @@ class Settings(BaseSettings):
     # MYSQL 설정
     DATABASE_URL: str
     
+    # REDIS 설정
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
+    REDIS_PASSWORD: str = ""
+    
     SECRET_KEY: str
     ALGORITHM: str = "HS256"
 
