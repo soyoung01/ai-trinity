@@ -2,13 +2,17 @@ import json
 from openai import OpenAI
 from src.config import settings
 from src.api.models.routine import WeeklyRoutineResponse
+from langsmith.wrappers import wrap_openai
+from langsmith import traceable
 
 class RoutineGeneratorService:
     def __init__(self):
-        self.client = OpenAI(api_key=settings.OPENAI_API_KEY)
+        raw_client = OpenAI(api_key=settings.OPENAI_API_KEY)
+        self.client = wrap_openai(raw_client)
         self.model = settings.OPENAI_MODEL
         self.temperature = settings.OPENAI_TEMPERATURE
 
+    @traceable(run_type="chain", name="Generate Weekly Routine")
     def generate_weekly_routine(
         self, 
         user_profile: dict, 
