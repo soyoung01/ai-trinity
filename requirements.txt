@@ -27,4 +27,4 @@ orjson==3.11.4
 requests-toolbelt==1.0.0 
 zstandard==0.25.0
 async-timeout==5.0.1 
-redis==7.1.0  
+redis
