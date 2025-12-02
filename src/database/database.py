@@ -12,7 +12,6 @@ if not SQLALCHEMY_DATABASE_URL:
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
-    # echo=True,  # 개발 중에 SQL 로그를 보고 싶으면 주석 해제
     pool_pre_ping=True,
     pool_recycle=3600,
 )
