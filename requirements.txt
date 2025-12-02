@@ -22,3 +22,9 @@ ecdsa==0.19.1
 pyasn1==0.6.1 
 python-jose==3.5.0 
 rsa==4.9.1
+langsmith==0.4.49 
+orjson==3.11.4 
+requests-toolbelt==1.0.0 
+zstandard==0.25.0
+async-timeout==5.0.1 
+redis==7.1.0  

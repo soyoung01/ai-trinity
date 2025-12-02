@@ -1,5 +1,7 @@
 from openai import OpenAI
 from typing import Dict, Any
+from langsmith.wrappers import wrap_openai
+from langsmith import traceable
 import logging
 
 logger = logging.getLogger(__name__)
@@ -9,7 +11,8 @@ class FitnessReportGenerator:
     
     def __init__(self, api_key: str, model: str = "gpt-4o-mini"):
         """초기화"""
-        self.client = OpenAI(api_key=api_key)
+        raw_client = OpenAI(api_key=api_key)
+        self.client = wrap_openai(raw_client)
         self.model = model
         logger.info(f"FitnessReportGenerator 초기화 완료 (model: {model})")
     
@@ -69,6 +72,7 @@ class FitnessReportGenerator:
 
         return prompt
     
+    @traceable(run_type="chain", name="Generate Fitness Report")
     def generate_report(
         self, 
         data: Dict[str, Any], 
